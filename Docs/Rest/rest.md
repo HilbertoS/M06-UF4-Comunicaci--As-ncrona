@@ -11,12 +11,14 @@ Per a diseñar una API de REST s’utilitzen diferents principis i pràctiques q
 La separació de les preocupacions, que fa que cada recurs o entitat que es crea a través de l’ API ha de ser responsable de una sola tasca específica. Això fa que es pugui treballar en diferents parts de forma independent.
 
 Exemple:
-
+```
 /usuaris/{id_usuari}/tasques: per obtenir una llista de totes les tasques d'un usuari.
 
 /usuaris/{id_usuari}/tasques/{id_tasca}: per accedir a una tasca específica per la seva ID.
 
 /usuaris/{id_usuari}/tasques/{id_tasca}/comentaris: per obtenir una llista de tots els comentaris associats a una tasca.
+
+```
 
 La utilització de URLs, les quals han de ser descriptives i significatives, es ha dir, han de ser concretes per tal d’entendre a que recurs s'està accedint o manipulan. Ús de mètodes HTTP (GET, POST, PUT y DELETE) de forma adecuada. Exemple:
 
@@ -34,11 +36,15 @@ Per fer ús d’una API de REST en l’aplicació JavaScript es pot fer ús de l
 
 1.  Un cop instal·lat Node.js, creat l’arxiu index.js i iniciat el projecte (amb  _npm init_). Tenim que instalar express (_npm install express_)
 
+ ```
 $ npm init
 
+```
+```
 $ npm install express
-
+```
 2.  Al crear un nou fitxer (server.js) escriure el següent codi:
+```
 
 const express = require('express');
 const app = express();
@@ -46,6 +52,9 @@ const port = 8000;
 app.listen(port, () => {
 	console.log(`Servidor funcionant en el port: ${port}`);
 });
+
+```
+
 
 3.  Executa servidor:  _node server.js_
 
@@ -83,7 +92,7 @@ _localhost:8000/api/cart/add-product_
 
 **Exemple generat per Chat GPT:**
 
-const express = require('express');
+```const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const app = express();
@@ -118,6 +127,7 @@ app.post('/api/login', passport.authenticate('local', { session: false }), (req,
 app.listen(3000, () => {
 ` `console.log('Servidor corriendo en el puerto 3000');
 });
+```
 
 ### [](https://github.com/ain12/project-ajax/blob/main/DocumentationREST.md#creaci%C3%B3-api-rest)CREACIÓ API REST
 
