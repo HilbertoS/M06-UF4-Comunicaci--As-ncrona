@@ -1,24 +1,23 @@
-fetch('https://jsonplaceholder.typicode.com/users', {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'default',
-    headers: new Headers({ 'Content-Type': 'application/json' }),  
-})
-.then(response => response.json())
-.then(data => {
-    let padre = document.querySelector('body');
+const express = require("./node_modules/express");
+const app = express();
 
-    data.forEach(user => {
-        let div = document.createElement('div');
-        div.innerHTML = `
-            <p>ID: ${user.id}</p>
-            <p>Name: ${user.name}</p>
-            <p>Email: ${user.email}</p>
-            <hr>
-        `;
-        padre.appendChild(div);
-    });
-})
-.catch(error => {
-    console.log("Error:", error);
+const PORT = 3000;
+
+app.use(express.json());
+
+// Ruta de proxy para reenviar las solicitudes a la API
+app.get('/', async (req, res) => {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error al obtener datos de la API' });
+  }
+});
+
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`Servidor proxy escuchando en http://localhost:${PORT}`);
 });
