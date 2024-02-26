@@ -217,7 +217,7 @@ Para ejecutar el servidor simplemente abrimos una terminal en la carpeta raíz d
 ```
  node --watch "nombreDelArchivo.js"
 ```
-, de esta manera se reinicia el servidor automáticamente cada vez que detecte algún cambio.
+de esta manera se reinicia el servidor automáticamente cada vez que detecte algún cambio.
 ### Propuesta de ejercicio:
 Con toda la información brindada anteriormente crea un método que accediendo a la ruta /usuarios devuelva un documento html con una card por cada usuario.
 
