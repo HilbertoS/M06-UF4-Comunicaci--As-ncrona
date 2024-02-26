@@ -213,7 +213,11 @@ app.delete('/deleteUser/:id', async (req, res) => {
 ```
 ## Ejercicios
 ### Ejecutar el servidor
-Para ejecutar el servidor simplemente abrimos una terminal en la carpeta raíz del proyecto y ejecutamos el comando node --watch "nombreDelArchivo.js", de esta manera se reinicia el servidor automáticamente cada vez que detecte algún cambio.
+Para ejecutar el servidor simplemente abrimos una terminal en la carpeta raíz del proyecto y ejecutamos el comando
+```
+ node --watch "nombreDelArchivo.js"
+```
+, de esta manera se reinicia el servidor automáticamente cada vez que detecte algún cambio.
 ### Propuesta de ejercicio:
 Con toda la información brindada anteriormente crea un método que accediendo a la ruta /usuarios devuelva un documento html con una card por cada usuario.
 
