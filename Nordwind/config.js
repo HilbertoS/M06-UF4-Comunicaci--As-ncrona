@@ -18,7 +18,7 @@ const PORT = 3001;
 app.use('/', express.static('./public'));
 app.use(express.json());
 
-app.get('/', async (req, res) => {
+app.get('/products', async (req, res) => {
    
 
     try {
