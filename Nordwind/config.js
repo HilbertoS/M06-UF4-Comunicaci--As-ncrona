@@ -5,7 +5,7 @@ class dataContext {
         this.client = new Client({
                 user: 'postgres',
                 host: 'localhost',
-                database: 'Facturas',
+                database: 'northwind',
                 password: 'alubbdd',
                 port: 5432
         })
