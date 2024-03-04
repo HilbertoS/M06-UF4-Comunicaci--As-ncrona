@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table id="productsTable">
+    </table>
+
+    <script>
+        fetch('http://localhost:3001/products').then(response => response.json()).then(data => {
+            
+            let table = document.getElementById('productsTable');
+            
+            Object.keys(data[0]).forEach( key => {
+                let th = document.createElement('th');
+                th.innerHTML = key;
+                table.appendChild(th);
+            })
+            
+            data.forEach(product => {
+                let tr = document.createElement('tr');
+                let td = document.createElement('td');
+
+                td.innerHTML = product.product_name;
+                tr.appendChild(td);
+                table.appendChild(tr);
+
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-const { Client } = require('pg')
-const express = require('express'); 
+const { Client } = require('./node_modules/pg')
+const express = require('./node_modules/express'); 
 
 const config = {
             user: 'postgres',
@@ -20,7 +20,6 @@ app.use(express.json());
 
 app.get('/products', async (req, res) => {
    
-
     try {
         const result = await client.query("SELECT * FROM products");
         const products = result.rows;
