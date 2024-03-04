@@ -9,8 +9,6 @@ const config = {
             port: 5432
 }
 
-const client = new Client(config)
-
 client.connect();
 const app = express();
 const PORT = 3001;
