@@ -14,7 +14,7 @@ const client = new Client(config);
 
 client.connect();
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
 app.use('/', express.static('./public'));
 app.use(express.json());
