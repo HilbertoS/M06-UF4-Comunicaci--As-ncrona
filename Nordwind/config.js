@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-const { Client } = require('pg');
-const express = require('express'); 
-require('dotenv').config(); // Carga las variables de entorno desde .env
-=======
 const { Client } = require('./node_modules/pg')
 const express = require('./node_modules/express'); 
->>>>>>> e1e887ddd961ae895384071d6263e51d6804c210
+require('dotenv').config();
 
 const config = {
     user: process.env.USER,
@@ -15,11 +10,7 @@ const config = {
     port: process.env.PORT
 }
 
-<<<<<<< HEAD
-const client= new Client(config);
-=======
 const client = new Client(config);
->>>>>>> e1e887ddd961ae895384071d6263e51d6804c210
 
 client.connect();
 const app = express();
@@ -29,10 +20,7 @@ app.use('/', express.static('./public'));
 app.use(express.json());
 
 app.get('/products', async (req, res) => {
-<<<<<<< HEAD
-=======
    
->>>>>>> e1e887ddd961ae895384071d6263e51d6804c210
     try {
         const result = await client.query("SELECT * FROM products");
         const products = result.rows;
