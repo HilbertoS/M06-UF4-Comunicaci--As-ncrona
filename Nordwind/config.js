@@ -1,6 +1,7 @@
 const { Client } = require('./node_modules/pg')
 const express = require('./node_modules/express'); 
 require('dotenv').config();
+
 const config = {
     user: process.env.USER,
     host: process.env.HOST,
