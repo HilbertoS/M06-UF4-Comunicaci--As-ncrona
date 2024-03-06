@@ -1,7 +1,6 @@
 import express from 'express';
 const router = express.Router();
 
-export default router;
 
 router.post('/', async (req, res) => {
     const order = req.body;
@@ -57,3 +56,5 @@ router.put('/:id', async (req, res) => {
         res.status(404).json({ message: 'order no encontrado' });
     }
 })
+
+export default router;
