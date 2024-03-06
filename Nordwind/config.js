@@ -2,8 +2,6 @@ import pg from 'pg';
 const { Client } = pg;
 import express  from 'express'; 
 import ordersRoutes  from './routas/order.js';
-import empleadosRoutes  from './routas/empleado.js';
-
 
 import dotenv from 'dotenv';
 
