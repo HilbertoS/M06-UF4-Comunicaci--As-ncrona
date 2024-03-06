@@ -37,7 +37,19 @@ app.get('/products', async (req, res) => {
         res.status(500).send('Error interno del servidor');
     }
 });
-app.use('/orders', ordersRoutes);
+app.get('/orders', async (req, res) => {
+   
+    try {
+        const result = await client.query("SELECT * FROM orders");
+        const orders = result.rows;
+        res.json(orders);
+    } catch (error) {
+        console.error('Error al obtener orders:', error);
+        res.status(500).send('Error interno del servidor');
+    } finally {
+        await client.end();
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
