@@ -23,6 +23,8 @@ const PORT = 3000;
 app.use('/', express.static('./public'));
 app.use(express.json());
 
+app.use('/empleados', require('routas/empleado.js'))
+
 app.get('/products', async (req, res) => {
    
     try {

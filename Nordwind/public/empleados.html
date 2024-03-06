@@ -1,115 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- Basic -->
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!-- Mobile Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- Site Metas -->
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+  <!-- Agrega tus metas y enlaces a CSS y fuentes aquí -->
 
-  <title>Empleados</title>
-  <!-- slider stylesheet -->
-  <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
 
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-  <!-- fonts style -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
-  <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Estilos personalizados -->
+  <link href="css/style.css" rel="stylesheet" />
 </head>
-
 <body>
-  <div class="hero_area">
-    <header class="header_section">
-      <div class="container">
-        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
-          <a class="navbar-brand" href="index.html">
-            <img src="images/logo.jpg" alt="Foto empleados" /> </a>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
-              <ul class="navbar-nav  ">
-                <li class="nav-item active">
-                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="fruit.html"> Productos</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="orders.html"> orders </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="empleados.html">Empleados Mariama</a>
-                </li>
-              </ul>
-              <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
-                <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
-              </form>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-
-
-    <div class="container mt-4">
-      <h2>Empleados</h2>
-      <table class="table">
+  <div class="container mt-4">
+    <h2>Empleados</h2>
+    <div class="table-responsive">
+      <table class="table table-striped" id="tablaEmpleados">
         <thead class="thead-dark">
           <tr>
             <th>ID</th>
             <th>Apellido</th>
             <th>Nombre</th>
             <th>Título</th>
-            <th>Acciones</th> <!-- Columna para iconos de acciones -->
+            <th>Región</th>
+            <th>Código Postal</th>
+            <th>Teléfono Casa</th>
+            <th>Adreca</th>
+            <th>Extensión</th>
+            <th>Notas</th>
+            <th>Reports to</th>
+            <th>Photo empleado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Ejemplo de fila de datos -->
-          <tr>
-            <td>1</td>
-            <td>García</td>
-            <td>Juan</td>
-            <td>Desarrollador</td>
-            <td>
-              <!-- Iconos de edicion, eliminar, insertar -->
-              <a href="#" class="text-primary mr-2"><i class="fas fa-plus-circle"></i></a>
-              <a href="#" class="text-primary mr-2"><i class="fas fa-edit"></i></a> 
-              <a href="#" class="text-danger mr-2"><i class="fas fa-trash-alt"></i></a>
-            </td>
-          </tr>
+          <!-- Las filas de datos se llenarán aquí a través de JavaScript -->
         </tbody>
       </table>
     </div>
   </div>
 
+  <!-- Script de jQuery -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+  <!-- Script de Bootstrap -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 
-
-  <!-- footer section -->
-  <section class="container-fluid footer_section">
-    <p>
-      Copyright &copy; 2024 Mariama Tamba All Rights Reserved By
-      <a href="https://html.design/">Free Html Templates</a>
-    </p>
-  </section>
- 
-
-
-  <!--Script de Jquery y bootstrap-->
-  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-  <script type="text/javascript" src="js/bootstrap.js"></script>
-
+  <!-- Script de frontend para obtener datos y llenar la tabla -->
+  <script>
+    $(document).ready(function() {
+      // Hacer una solicitud GET al backend para obtener datos de empleados
+      $.get('/empleados', function(data) {
+        // Iterar sobre los datos y crear filas de tabla para cada empleado
+        data.forEach(function(empleado) {
+          $('#tablaEmpleados tbody').append(`
+            <tr>
+              <td>${empleado.employee_id}</td>
+              <td>${empleado.last_name}</td>
+              <td>${empleado.first_name}</td>
+              <td>${empleado.title}</td>
+              <td>${empleado.region}</td>
+              <td>${empleado.postal_code}</td>
+              <td>${empleado.home_phone}</td>
+              <td>${empleado.address}</td>
+              <td>${empleado.extension}</td>
+              <td>${empleado.notes}</td>
+              <td>${empleado.reports_to}</td>
+              <td>${empleado.photo_path}</td>
+              <td>
+                <a href="#" class="text-primary mr-2"><i class="fas fa-plus-circle"></i></a>
+                <a href="#" class="text-primary mr-2"><i class="fas fa-edit"></i></a> 
+                <a href="#" class="text-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+              </td>
+            </tr>
+          `);
+        });
+      });
+    });
+  </script>
 </body>
-
 </html>
