@@ -40,6 +40,8 @@ Los endpoints son la interfaz principal a través de la cual los clientes intera
 
 ![Read](img/4.png)
 
+
+
 #### CREAR (_POST_)
 
  `/tareas/{id}`: Endpoint para agregar una nueva tarea.
@@ -47,6 +49,7 @@ Los endpoints son la interfaz principal a través de la cual los clientes intera
 ![Create](img/3.png)
 
 #### MODIFICAR (_PUT_/_FETCH_)
+
 
 ![Update](img/5.png)
 
