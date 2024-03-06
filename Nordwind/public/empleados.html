@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Agrega tus metas y enlaces a CSS y fuentes aquí -->
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Estilos personalizados -->
+  <link href="css/style.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container mt-4">
+    <h2>Empleados</h2>
+    <div class="table-responsive">
+      <table class="table table-striped" id="tablaEmpleados">
+        <thead class="thead-dark">
+          <tr>
+            <th>ID</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>Título</th>
+            <th>Región</th>
+            <th>Código Postal</th>
+            <th>Teléfono Casa</th>
+            <th>Adreca</th>
+            <th>Extensión</th>
+            <th>Notas</th>
+            <th>Reports to</th>
+            <th>Photo empleado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Las filas de datos se llenarán aquí a través de JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Script de jQuery -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <!-- Script de Bootstrap -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+  <!-- Script de frontend para obtener datos y llenar la tabla -->
+  <script>
+    $(document).ready(function() {
+      // Hacer una solicitud GET al backend para obtener datos de empleados
+      $.get('/empleados', function(data) {
+        // Iterar sobre los datos y crear filas de tabla para cada empleado
+        data.forEach(function(empleado) {
+          $('#tablaEmpleados tbody').append(`
+            <tr>
+              <td>${empleado.employee_id}</td>
+              <td>${empleado.last_name}</td>
+              <td>${empleado.first_name}</td>
+              <td>${empleado.title}</td>
+              <td>${empleado.region}</td>
+              <td>${empleado.postal_code}</td>
+              <td>${empleado.home_phone}</td>
+              <td>${empleado.address}</td>
+              <td>${empleado.extension}</td>
+              <td>${empleado.notes}</td>
+              <td>${empleado.reports_to}</td>
+              <td>${empleado.photo_path}</td>
+              <td>
+                <a href="#" class="text-primary mr-2"><i class="fas fa-plus-circle"></i></a>
+                <a href="#" class="text-primary mr-2"><i class="fas fa-edit"></i></a> 
+                <a href="#" class="text-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+              </td>
+            </tr>
+          `);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
