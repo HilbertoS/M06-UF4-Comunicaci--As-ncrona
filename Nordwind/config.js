@@ -3,7 +3,8 @@ import pg from 'pg';
 const { Client } = pg;
 import express  from 'express'; 
 import ordersRoutes  from './controllers/orders.js';
-import ordersRoutes  from './controllers/producto.js';
+import empleadosRoutes  from './controllers/empleados.js';
+import prodcutosRoutes  from './controllers/productos.js';
 
 import dotenv from 'dotenv';
 
@@ -26,8 +27,9 @@ app.use('/', express.static('./public'));
 app.use(express.json());
 
 app.use('/orders', ordersRoutes);
+app.use('/empleados', empleadosRoutes);
+app.use('/productos', prodcutosRoutes);
 
-app.use('/products', )
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
