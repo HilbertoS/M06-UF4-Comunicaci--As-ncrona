@@ -30,15 +30,13 @@ app.use(express.json());
 app.get('/products', async (req, res) => {
    
     try {
-        const result = await client.query("SELECT * FROM products");
+        const result = await client.query("select * from products join categories using(category_id)");
         const products = result.rows;
         console.log(products);
         res.json(products);
     } catch (error) {
         console.error('Error al obtener productos:', error);
         res.status(500).send('Error interno del servidor');
-    } finally {
-        await client.end();
     }
 });
 app.use('/orders', ordersRoutes);
