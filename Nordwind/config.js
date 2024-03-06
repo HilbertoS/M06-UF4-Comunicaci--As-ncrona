@@ -3,6 +3,8 @@ import pg from 'pg';
 const { Client } = pg;
 import express  from 'express'; 
 import ordersRoutes  from './controllers/orders.js';
+import empleadosRoutes  from './controllers/empleados.js';
+import prodcutosRoutes  from './controllers/productos.js';
 
 import dotenv from 'dotenv';
 
@@ -25,20 +27,9 @@ app.use('/', express.static('./public'));
 app.use(express.json());
 
 app.use('/orders', ordersRoutes);
+app.use('/empleados', empleadosRoutes);
+app.use('/productos', prodcutosRoutes);
 
-app.get('/products', async (req, res) => {
-   
-    try {
-        const result = await client.query("select * from products join categories using(category_id)");
-        const products = result.rows;
-        console.log(products);
-        res.json(products);
-    } catch (error) {
-        console.error('Error al obtener productos:', error);
-        res.status(500).send('Error interno del servidor');
-    }
-});
-app.use('/orders', ordersRoutes);
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
