@@ -1,4 +1,9 @@
-export const createOrder = async (req, res) => {
+import express from 'express';
+const router = express.Router();
+
+export default router;
+
+router.post('/', async (req, res) => {
     const order = req.body;
     const result = await client.query('INSERT INTO orders VALUES (?)', [order]);
     if(result){
@@ -6,8 +11,9 @@ export const createOrder = async (req, res) => {
     }else{
         res.status(500).send('Error al guardar el order')
     }
-}
-export const getOrders = async (req, res) => {
+})
+
+router.get('/', async (req, res) => {
     try {
         const result = await client.query("SELECT * FROM orders");
         const orders = result.rows;
@@ -16,8 +22,8 @@ export const getOrders = async (req, res) => {
         console.error('Error al obtener orders:', error);
         res.status(500).send('Error interno del servidor');
     }
-}
-export const getOrder = async (req, res) => {
+})
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const result = await client.query("SELECT * FROM orders WHERE id = ?", [id]);
@@ -27,8 +33,8 @@ export const getOrder = async (req, res) => {
         console.error('Error al obtener orders:', error);
         res.status(500).send('Error interno del servidor');
     }
-}
-export const deleteOrder = async (req, res) => {
+})
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const result = await client.query('DELETE FROM orders WHERE id = ?', [id]);
@@ -40,8 +46,8 @@ export const deleteOrder = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error al eliminar el usuario', error: error.message });
     }
-}
-export const updateOrder = async (req, res) => {
+})
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const order = req.body;
     const result = await client.query('UPDATE orders SET ? WHERE id = ?', [order, id]);
@@ -50,4 +56,4 @@ export const updateOrder = async (req, res) => {
     } else {
         res.status(404).json({ message: 'order no encontrado' });
     }
-}
+})
