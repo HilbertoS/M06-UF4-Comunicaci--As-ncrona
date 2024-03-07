@@ -30,6 +30,8 @@ app.use('/orders', ordersRoutes);
 app.use('/empleados', empleadosRoutes);
 app.use('/productos', prodcutosRoutes);
 
+export {client}
+
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
