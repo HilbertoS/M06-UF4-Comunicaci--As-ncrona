@@ -161,7 +161,7 @@
               </div>
               <button type="submit" class="btn btn-dark">Insertar</button>
             </form>
-            
+
           </div>
         </div>
       </div>
@@ -174,51 +174,113 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
   <script>
     $(document).ready(function () {
-      fetch('/empleados')
-        .then(response => response.json())
-        .then(data => {
-          data.forEach(function (empleado) {
-            $('#tablaEmpleados tbody').append(`
-              <tr>
-                <td>${empleado.employee_id}</td>
-                <td>${empleado.last_name}</td>
-                <td>${empleado.first_name}</td>
-                <td>${empleado.title}</td>
-                <td>${empleado.region}</td>
-                <td>${empleado.postal_code}</td>
-                <td>${empleado.home_phone}</td>
-                <td>${empleado.address}</td>
-                <td>${empleado.extension}</td>
-                <td>${empleado.reports_to}</td>
-                <td>${empleado.photo_path}</td>
-                <td>
-                  <a href="#" class="text-dark mr-2" data-toggle="modal" data-target="#insertarEmpleadoModal">
-  <i class="fas fa-plus-circle"></i>
-</a>
-                  <a href="#" class="text-dark mr-2"><i class="fas fa-edit"></i></a> 
-                  <a href="#" class="text-dark mr-2"><i class="fas fa-trash-alt"></i></a>
-                </td>
-              </tr>
-            `);
+      // Función para cargar los empleados al cargar la página
+      function cargarEmpleados() {
+        fetch('/empleados')
+          .then(response => response.json())
+          .then(data => {
+            $('#tablaEmpleados tbody').empty(); // Limpiar la tabla antes de agregar los nuevos empleados
+            data.forEach(function (empleado) {
+              $('#tablaEmpleados tbody').append(`
+                  <tr>
+                    <td>${empleado.employee_id}</td>
+                    <td>${empleado.last_name}</td>
+                    <td>${empleado.first_name}</td>
+                    <td>${empleado.title}</td>
+                    <td>${empleado.region}</td>
+                    <td>${empleado.postal_code}</td>
+                    <td>${empleado.home_phone}</td>
+                    <td>${empleado.address}</td>
+                    <td>${empleado.extension}</td>
+                    <td>${empleado.reports_to}</td>
+                    <td>${empleado.photo_path}</td>
+                    <td>
+                      <a href="#" class="text-dark mr-2" data-toggle="modal" data-target="#insertarEmpleadoModal">
+                        <i class="fas fa-plus-circle"></i>
+                      </a>
+                      <a href="#" class="text-dark mr-2"><i class="fas fa-edit"></i></a> 
+                      <a href="#" class="text-dark mr-2"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                  </tr>
+                `);
+            });
+          })
+          .catch(error => {
+            console.error('Error al obtener datos de empleados:', error);
           });
-        })
-        .catch(error => {
-          console.error('Error al obtener datos de empleados:', error);
-        });
+      }
 
+      cargarEmpleados(); // Cargar los empleados al cargar la página
+
+      // Función para limpiar el formulario al mostrar el modal de inserción
       $('#insertarEmpleadoModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var modal = $(this);
         modal.find('input').val('');
       });
 
+      // Función para manejar el envío del formulario de inserción
       $('#formInsertarEmpleado').submit(function (event) {
-        event.preventDefault();
-        $('#insertarEmpleadoModal').modal('hide');
+        event.preventDefault(); // Prevenir el envío por defecto del formulario
+        // Obtener los datos del formulario
+       
+          var formData = {
+            apellido: $('#apellido').val(),
+            // Agrega aquí el resto de campos del formulario
+            nombre: $('#nombre').val(),
+            titulo: $('#titulo').val(),
+            region: $('#region').val(),
+            codigoPostal: $('#codigoPostal').val(),
+            telefono: $('#telefono').val(),
+            direccion: $('#direccion').val(),
+            extension: $('#extension').val(),
+            reportsTo: $('#reportsTo').val(), // Como ponwr los valores 
+                        // Añade más campos si es necesario según tu formulario y tu estructura de datos
+          };
+
+        // Enviar los datos al backend
+        fetch('/insertar-empleado', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Empleado insertado correctamente:', data);
+            cargarEmpleados(); // Actualizar la tabla de todo los empleados
+            $('#insertarEmpleadoModal').modal('hide'); // Cerrar el modal después de enviar el formulario
+          })
+          .catch(error => {
+            console.error('Error al insertar empleado:', error);
+          });
       });
 
     });
+
+
+    // Función para cargar los empleados al cargar la página y llenar el select de reports_to
+function cargarEmpleados() {
+    fetch('/empleados')
+        .then(response => response.json())
+        .then(data => {
+            $('#reports_to').empty(); // Limpiar el select antes de agregar las nuevas opciones
+            data.forEach(function (empleado) {
+                // Crear una opción para cada empleado con su nombre y su ID como valor
+                $('#reports_to').append(`<option value="${empleado.employee_id}">${empleado.first_name} ${empleado.last_name}</option>`);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener datos de empleados:', error);
+        });
+}
+
+// Llamar a la función para cargar los empleados al cargar la página
+cargarEmpleados();
+
   </script>
+
 </body>
 
 </html>
