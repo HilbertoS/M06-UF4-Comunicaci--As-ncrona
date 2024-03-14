@@ -238,7 +238,8 @@
                         // Añade más campos si es necesario según tu formulario y tu estructura de datos
           };
 
-        // Enviar los datos al backend
+
+          //Enviar los dotos al backend 
         fetch('/insertar-empleado', {
           method: 'POST',
           headers: {
@@ -249,7 +250,7 @@
           .then(response => response.json())
           .then(data => {
             console.log('Empleado insertado correctamente:', data);
-            cargarEmpleados(); // Actualizar la tabla de todo los empleados
+            cargarEmpleados(); //Tabla de los empleados
             $('#insertarEmpleadoModal').modal('hide'); // Cerrar el modal después de enviar el formulario
           })
           .catch(error => {
@@ -260,14 +261,12 @@
     });
 
 
-    // Función para cargar los empleados al cargar la página y llenar el select de reports_to
 function cargarEmpleados() {
     fetch('/empleados')
         .then(response => response.json())
         .then(data => {
-            $('#reports_to').empty(); // Limpiar el select antes de agregar las nuevas opciones
+            $('#reports_to').empty(); 
             data.forEach(function (empleado) {
-                // Crear una opción para cada empleado con su nombre y su ID como valor
                 $('#reports_to').append(`<option value="${empleado.employee_id}">${empleado.first_name} ${empleado.last_name}</option>`);
             });
         })
@@ -275,8 +274,6 @@ function cargarEmpleados() {
             console.error('Error al obtener datos de empleados:', error);
         });
 }
-
-// Llamar a la función para cargar los empleados al cargar la página
 cargarEmpleados();
 
   </script>

@@ -12,12 +12,12 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Ruta para manejar la inserción de empleados
+//Ruta para manejar el insert de los usuarios 
 router.post('/', async (req, res) => {
   const { last_name, first_name, title, region, postal_code, home_phone, address, extension, reports_to, photo_path } = req.body;
 
   try {
-      // Obtener todos los empleados excepto el que se está insertando
+      // Obtener todos los empleados excepto el que se está in
        result = await client.query('SELECT * FROM employees WHERE employee_id != $1', [reports_to]);
       const employees = result.rows;
 
