@@ -56,6 +56,9 @@
   <div class="container">
     <h2>Empleados</h2>
     <div>
+      <a href="#" class="text-dark mr-2" data-toggle="modal" data-target="#insertarEmpleadoModal">
+        <i class="fas fa-plus-circle"> Insertar Nuevo empleado</i>
+      </a>
       <table class="table table-striped table-lg mt-4 ml-0" id="tablaEmpleados">
         <thead class="thead-dark">
           <tr>
@@ -166,15 +169,112 @@
         </div>
       </div>
     </div>
-  </div>
 
+
+    <!-- Modal de modificación -->
+    <div class="modal fade" id="modificarEmpleadoModal" tabindex="-1" role="dialog"
+      aria-labelledby="modificarEmpleadoModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modificarEmpleadoModalLabel">Modificar Empleado</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Formulario para modificar el empleado -->
+            <form id="formModificarEmpleado">
+              <input type="hidden" id="employee_id_mod" name="employee_id_mod">
+              <div class="form-group">
+                <label for="last_name_mod">Apellido</label>
+                <input type="text" class="form-control" id="last_name_mod" name="last_name_mod">
+              </div>
+              <div class="form-group">
+                <label for="first_name_mod">Nombre</label>
+                <input type="text" class="form-control" id="first_name_mod" name="first_name_mod">
+              </div>
+              <div class="form-group">
+                <label for="title_mod">Título</label>
+                <input type="text" class="form-control" id="title_mod" name="title_mod">
+              </div>
+              <div class="form-group">
+                <label for="title_of_courtesy_mod">Título de cortesía</label>
+                <input type="text" class="form-control" id="title_of_courtesy_mod" name="title_of_courtesy_mod">
+              </div>
+              <div class="form-group">
+                <label for="birth_date_mod">Fecha de nacimiento</label>
+                <input type="date" class="form-control" id="birth_date_mod" name="birth_date_mod">
+              </div>
+              <div class="form-group">
+                <label for="hire_date_mod">Fecha de contratación</label>
+                <input type="date" class="form-control" id="hire_date_mod" name="hire_date_mod">
+              </div>
+              <div class="form-group">
+                <label for="address_mod">Dirección</label>
+                <input type="text" class="form-control" id="address_mod" name="address_mod">
+              </div>
+              <div class="form-group">
+                <label for="city_mod">Ciudad</label>
+                <input type="text" class="form-control" id="city_mod" name="city_mod">
+              </div>
+              <div class="form-group">
+                <label for="region_mod">Región</label>
+                <input type="text" class="form-control" id="region_mod" name="region_mod">
+              </div>
+              <div class="form-group">
+                <label for="postal_code_mod">Código Postal</label>
+                <input type="text" class="form-control" id="postal_code_mod" name="postal_code_mod">
+              </div>
+              <div class="form-group">
+                <label for="country_mod">País</label>
+                <input type="text" class="form-control" id="country_mod" name="country_mod">
+              </div>
+              <div class="form-group">
+                <label for="home_phone_mod">Teléfono de casa</label>
+                <input type="text" class="form-control" id="home_phone_mod" name="home_phone_mod">
+              </div>
+              <div class="form-group">
+                <label for="extension_mod">Extensión</label>
+                <input type="text" class="form-control" id="extension_mod" name="extension_mod">
+              </div>
+              <div class="form-group">
+                <label for="notes_mod">Notas</label>
+                <textarea class="form-control" id="notes_mod" name="notes_mod"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="reports_to_mod">Reports to</label>
+                <select class="form-control" id="reports_to_mod" name="reports_to_mod">
+                  <!-- Opciones para el supervisor, podrían ser cargadas dinámicamente desde una base de datos -->
+                  <option value="1">Supervisor 1</option>
+                  <option value="2">Supervisor 2</option>
+                  <option value="3">Supervisor 3</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="photo_path_mod">Ruta de la foto</label>
+                <input type="text" class="form-control" id="photo_path_mod" name="photo_path_mod">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="guardarCambiosBtn">Guardar cambios</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+
   <script>
     $(document).ready(function () {
       // Función para cargar los empleados al cargar la página
+
       function cargarEmpleados() {
         fetch('/empleados')
           .then(response => response.json())
@@ -182,27 +282,26 @@
             $('#tablaEmpleados tbody').empty(); // Limpiar la tabla antes de agregar los nuevos empleados
             data.forEach(function (empleado) {
               $('#tablaEmpleados tbody').append(`
-                  <tr>
-                    <td>${empleado.employee_id}</td>
-                    <td>${empleado.last_name}</td>
-                    <td>${empleado.first_name}</td>
-                    <td>${empleado.title}</td>
-                    <td>${empleado.region}</td>
-                    <td>${empleado.postal_code}</td>
-                    <td>${empleado.home_phone}</td>
-                    <td>${empleado.address}</td>
-                    <td>${empleado.extension}</td>
-                    <td>${empleado.reports_to}</td>
-                    <td>${empleado.photo_path}</td>
-                    <td>
-                      <a href="#" class="text-dark mr-2" data-toggle="modal" data-target="#insertarEmpleadoModal">
-                        <i class="fas fa-plus-circle"></i>
-                      </a>
-                      <a href="#" class="text-dark mr-2"><i class="fas fa-edit"></i></a> 
-                      <a href="#" class="text-dark mr-2"><i class="fas fa-trash-alt"></i></a>
-                    </td>
-                  </tr>
-                `);
+                        <tr>
+                            <td>${empleado.employee_id}</td>
+                            <td>${empleado.last_name}</td>
+                            <td>${empleado.first_name}</td>
+                            <td>${empleado.title}</td>
+                            <td>${empleado.region}</td>
+                            <td>${empleado.postal_code}</td>
+                            <td>${empleado.home_phone}</td>
+                            <td>${empleado.address}</td>
+                            <td>${empleado.extension}</td>
+                            <td>${empleado.reports_to}</td>
+                            <td>${empleado.photo_path}</td>
+                            <td>
+                                
+                              <a href="#" class="text-dark mr-2" data-toggle="modal" data-target="#modificarEmpleadoModal" data-id="ID_DEL_EMPLEADO">
+                          <i class="fas fa-edit"></i></a>                               
+                           <a href="#" class="text-dark mr-2"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    `);
             });
           })
           .catch(error => {
@@ -222,25 +321,23 @@
       // Función para manejar el envío del formulario de inserción
       $('#formInsertarEmpleado').submit(function (event) {
         event.preventDefault(); // Prevenir el envío por defecto del formulario
+
         // Obtener los datos del formulario
-       
-          var formData = {
-            apellido: $('#apellido').val(),
-            // Agrega aquí el resto de campos del formulario
-            nombre: $('#nombre').val(),
-            titulo: $('#titulo').val(),
-            region: $('#region').val(),
-            codigoPostal: $('#codigoPostal').val(),
-            telefono: $('#telefono').val(),
-            direccion: $('#direccion').val(),
-            extension: $('#extension').val(),
-            reportsTo: $('#reportsTo').val(), // Como ponwr los valores 
-                        // Añade más campos si es necesario según tu formulario y tu estructura de datos
-          };
+        var formData = {
+          last_name: $('#last_name').val(),
+          first_name: $('#first_name').val(),
+          title: $('#title').val(),
+          region: $('#region').val(),
+          postal_code: $('#postal_code').val(),
+          home_phone: $('#home_phone').val(),
+          address: $('#address').val(),
+          extension: $('#extension').val(),
+          reports_to: $('#reports_to').val(),
+          photo_path: $('#photo_path').val()
+        };
 
-
-          //Enviar los dotos al backend 
-        fetch('/insertar-empleado', {
+        //Enviar los datos al backend 
+        fetch('insertar-empleado', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -250,7 +347,7 @@
           .then(response => response.json())
           .then(data => {
             console.log('Empleado insertado correctamente:', data);
-            cargarEmpleados(); //Tabla de los empleados
+            cargarEmpleados(); // Actualizar la tabla de empleados
             $('#insertarEmpleadoModal').modal('hide'); // Cerrar el modal después de enviar el formulario
           })
           .catch(error => {
@@ -258,23 +355,107 @@
           });
       });
 
+
+      //Cragas los datos del empleado que queremos modificar
+      function cargarEmpleadoParaModificar(empleadoId) {
+        fetch(`/${empleadoId}`)
+          .then(response => response.json())
+          .then(empleado => {
+            // Llenar el formulario con los datos del empleado
+            $('#last_name_modificar').val(empleado.last_name);
+            $('#first_name_modificar').val(empleado.first_name);
+            $('#title_modificar').val(empleado.title);
+            $('#region_modificar').val(empleado.region);
+            $('#postal_code_modificar').val(empleado.postal_code);
+            $('#home_phone_modificar').val(empleado.home_phone);
+            $('#address_modificar').val(empleado.address);
+            $('#extension_modificar').val(empleado.extension);
+            $('#reports_to_modificar').val(empleado.reports_to);
+            $('#photo_path_modificar').val(empleado.photo_path);
+          })
+          .catch(error => {
+            console.error('Error al obtener datos del empleado:', error);
+          });
+      }
+
+
+      // Cargar datos del empleado para modificar
+      function cargarEmpleadoParaModificar(empleadoId) {
+        fetch(`/empleados/${empleadoId}`)
+          .then(response => response.json())
+          .then(empleado => {
+            // Llenar el formulario con los datos del empleado
+            $('#employee_id_modificar').val(empleado.employee_id);
+            $('#last_name_modificar').val(empleado.last_name);
+            // Asignar valores a otros campos del formulario de modificación
+            // ...
+          })
+          .catch(error => {
+            console.error('Error al obtener datos del empleado:', error);
+          });
+      }
+
+      // Evento click para cada fila de la tabla de empleados
+      $('#tablaEmpleados').on('click', 'tr', function () {
+        const empleadoId = $(this).find('td:first').text(); // Obtener el ID del primer td de la fila
+        cargarEmpleadoParaModificar(empleadoId);
+      });
+
+      // Manejar el envío del formulario de modificación
+      $('#formModificarEmpleado').submit(function (event) {
+        event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+        // Obtener los datos del formulario
+        var formData = {
+          employee_id: $('#employee_id_modificar').val(),
+          last_name: $('#last_name_modificar').val(),
+          first_name: $('#first_name_modificar').val(),
+          title: $('#title_modificar').val(),
+          region: $('#region_modificar').val(),
+          postal_code: $('#postal_code_modificar').val(),
+          home_phone: $('#home_phone_modificar').val(),
+          address: $('#address_modificar').val(),
+          extension: $('#extension_modificar').val(),
+          reports_to: $('#reports_to_modificar').val(),
+          photo_path: $('#photo_path_modificar').val()
+        };
+
+
+
+        //Enviar los datos al backend para modificar el empleado
+        fetch('modificar-empleado', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Empleado modificado correctamente:', data);
+            cargarEmpleados(); // Actualizar la tabla de empleados
+            $('#modificarEmpleadoModal').modal('hide'); // Cerrar el modal después de enviar el formulario
+          })
+          .catch(error => {
+            console.error('Error al modificar empleado:', error);
+          });
+      });
+
+
     });
 
 
-function cargarEmpleados() {
-    fetch('/empleados')
-        .then(response => response.json())
-        .then(data => {
-            $('#reports_to').empty(); 
-            data.forEach(function (empleado) {
-                $('#reports_to').append(`<option value="${empleado.employee_id}">${empleado.first_name} ${empleado.last_name}</option>`);
-            });
-        })
-        .catch(error => {
-            console.error('Error al obtener datos de empleados:', error);
-        });
-}
-cargarEmpleados();
+
+
+
+
+
+
+
+
+
+
+
 
   </script>
 
