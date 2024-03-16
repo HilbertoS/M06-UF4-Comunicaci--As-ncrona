@@ -1,7 +1,5 @@
 import express from 'express';
 import { client } from '../config.js';
-//import client from '../config.js';
-
 
 const router = express.Router();
 
@@ -38,11 +36,11 @@ router.get('/:id', async (req, res) => {
 
 // Insercion en la base de datos
 router.post('/insertar-empleado', async (req, res) => {
-    const { last_name, first_name, title, region, postal_code, home_phone, address, extension, reports_to, photo_path } = req.body;
+    const {employee_id, last_name, first_name, title, region, postal_code, home_phone, address, extension, reports_to, photo_path } = req.body;
     try {
         await client.query('INSERT INTO employees (employee_id, last_name, first_name, title, region, postal_code, home_phone, address, extension, reports_to, photo_path) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
-            [1001, last_name, first_name, title, region, postal_code, home_phone, address, extension, reports_to, photo_path]);
-        
+            [employee_id, last_name, first_name, title, region, postal_code, home_phone, address, extension, reports_to, photo_path]);
+
         res.json({ message: 'Empleado insertado exitosamente' });
     } catch (err) {
         console.error('Error al insertar empleado:', err);
@@ -51,4 +49,18 @@ router.post('/insertar-empleado', async (req, res) => {
 });
 
 
+// Eliminar un empleado por su ID
+router.delete('/:id', async (req, res) => {
+    const empleadoId = req.params.id;
+    try {
+        const result = await client.query('DELETE FROM employees WHERE employee_id = $1', [empleadoId]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Empleado no encontrado' });
+        }
+        res.json({ message: 'Empleado eliminado correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar empleado:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+});
 export default router;

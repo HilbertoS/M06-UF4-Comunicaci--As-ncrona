@@ -6,7 +6,6 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-
 <body>
   <div class="hero_area">
     <!-- header section starts -->
@@ -170,16 +169,13 @@
       </div>
     </div>
   </div>
-
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 
-
   <script>
     $(document).ready(function () {
       // Función para cargar los empleados al cargar la página
-
       function cargarEmpleados() {
         fetch('/empleados')
           .then(response => response.json())
@@ -202,8 +198,11 @@
                             <td>
                                 
                               <a href="#" class="text-dark mr-2" data-toggle="modal" data-target="#modificarEmpleadoModal" data-id="ID_DEL_EMPLEADO">
-                          <i class="fas fa-edit"></i></a>                               
-                           <a href="#" class="text-dark mr-2"><i class="fas fa-trash-alt"></i></a>
+                          <i class="fas fa-edit"></i></a> 
+                           <a href="#" class="text-dark mr-2 btnEliminarEmpleado">
+    <i class="fas fa-trash-alt"></i>
+</a>
+
                             </td>
                         </tr>
                     `);
@@ -241,6 +240,7 @@
 
         // Obtener los datos del formulario
         var formData = {
+          employee_id:$('#employee_id').val(),
           last_name: $('#last_name').val(),
           first_name: $('#first_name').val(),
           title: $('#title').val(),
@@ -270,24 +270,31 @@
           .catch(error => {
             console.error('Error al insertar empleado:', error);
           });
+
+        $(document).ready(function () {
+          $('.btnEliminarEmpleado').click(function (event) {
+            event.preventDefault();
+            var empleadoId = $(this).closest('tr').data('id');
+            if (confirm('¿Estás seguro de que quieres eliminar este empleado?')) {
+              fetch(`/empleados/${empleadoId}`, { method: 'DELETE' })
+                .then(response => {
+                  if (response.ok) {
+                    location.reload();
+                  } else {
+                    alert('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
+                  }
+                })
+                .catch(error => {
+                  console.error('Error al eliminar el empleado:', error);
+                  alert('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
+                });
+            }
+          });
+        });
+
       });
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </script>
-
 </body>
 
 </html>
