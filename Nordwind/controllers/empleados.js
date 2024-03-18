@@ -48,7 +48,6 @@ router.post('/insertar-empleado', async (req, res) => {
     }
 });
 
-
 // Eliminar un empleado por su ID
 router.delete('/:id', async (req, res) => {
     const empleadoId = req.params.id;
@@ -63,4 +62,5 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
+
 export default router;

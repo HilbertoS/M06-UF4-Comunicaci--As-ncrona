@@ -6,6 +6,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+
 <body>
   <div class="hero_area">
     <!-- header section starts -->
@@ -79,7 +80,7 @@
       </table>
     </div>
 
-    <!-- Formulario emergente -->
+    <!--Modal para INSERTAR EMPLEADO -->
     <div class="modal fade" id="insertarEmpleadoModal" tabindex="-1" role="dialog"
       aria-labelledby="insertarEmpleadoModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -168,6 +169,75 @@
         </div>
       </div>
     </div>
+
+    <!--Modal para MODIFICAR EMPLEADO-->
+    <!-- Formulario emergente para modificar empleado -->
+    <div class="modal fade" id="modificarEmpleadoModal" tabindex="-1" role="dialog"
+      aria-labelledby="modificarEmpleadoModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modificarEmpleadoModalLabel">Modificar Empleado</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="formModificarEmpleado">
+              <div class="form-group">
+                <label for="employee_id_edit">ID</label>
+                <input type="text" class="form-control" id="employee_id_edit" name="employee_id_edit" readonly>
+              </div>
+              <div class="form-group">
+                <label for="last_name_edit">Apellido</label>
+                <input type="text" class="form-control" id="last_name_edit" name="last_name_edit">
+              </div>
+              <div class="form-group">
+                <label for="first_name_edit">Nombre</label>
+                <input type="text" class="form-control" id="first_name_edit" name="first_name_edit">
+              </div>
+              <div class="form-group">
+                <label for="title_edit">Título</label>
+                <input type="text" class="form-control" id="title_edit" name="title_edit">
+              </div>
+              <div class="form-group">
+                <label for="region_edit">Región</label>
+                <input type="text" class="form-control" id="region_edit" name="region_edit">
+              </div>
+              <div class="form-group">
+                <label for="postal_code_edit">Código Postal</label>
+                <input type="text" class="form-control" id="postal_code_edit" name="postal_code_edit">
+              </div>
+              <div class="form-group">
+                <label for="home_phone_edit">Teléfono de casa</label>
+                <input type="text" class="form-control" id="home_phone_edit" name="home_phone_edit">
+              </div>
+              <div class="form-group">
+                <label for="address_edit">Dirección</label>
+                <input type="text" class="form-control" id="address_edit" name="address_edit">
+              </div>
+              <div class="form-group">
+                <label for="extension_edit">Extensión</label>
+                <input type="text" class="form-control" id="extension_edit" name="extension_edit">
+              </div>
+              <div class="form-group">
+                <label for="reports_to_edit">Reports to</label>
+                <select class="form-control" id="selectReportsTo_edit" name="reports_to_edit">
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="photo_path_edit">Ruta de la foto</label>
+                <input type="text" class="form-control" id="photo_path_edit" name="photo_path_edit">
+              </div>
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="text/javascript"
@@ -196,13 +266,11 @@
                             <td>${empleado.reports_to}</td>
                             <td>${empleado.photo_path}</td>
                             <td>
-                                
-                              <a href="#" class="text-dark mr-2" data-toggle="modal" data-target="#modificarEmpleadoModal" data-id="ID_DEL_EMPLEADO">
-                          <i class="fas fa-edit"></i></a> 
-                           <a href="#" class="text-dark mr-2 btnEliminarEmpleado">
-    <i class="fas fa-trash-alt"></i>
-</a>
-
+                              <a href="#" class="text-dark mr-2 btnModificarEmpleado" data-toggle="modal" data-target="#modificarEmpleadoModal" data-id="${empleado.employee_id}">
+                              <i class="fas fa-edit"></i></a> 
+                              <a href="#" class="text-dark mr-2 btnEliminarEmpleado" data-id="${empleado.employee_id}">
+                                <i class="far fa-trash-alt"></i>
+                              </a>
                             </td>
                         </tr>
                     `);
@@ -212,7 +280,6 @@
             console.error('Error al obtener datos de empleados:', error);
           });
       }
-
       cargarEmpleados(); // Cargar los empleados al cargar la página
 
       // Función para limpiar el formulario al mostrar el modal de inserción
@@ -240,7 +307,7 @@
 
         // Obtener los datos del formulario
         var formData = {
-          employee_id:$('#employee_id').val(),
+          employee_id: $('#employee_id').val(),
           last_name: $('#last_name').val(),
           first_name: $('#first_name').val(),
           title: $('#title').val(),
@@ -270,31 +337,30 @@
           .catch(error => {
             console.error('Error al insertar empleado:', error);
           });
+      });
 
-        $(document).ready(function () {
-          $('.btnEliminarEmpleado').click(function (event) {
-            event.preventDefault();
-            var empleadoId = $(this).closest('tr').data('id');
-            if (confirm('¿Estás seguro de que quieres eliminar este empleado?')) {
-              fetch(`/empleados/${empleadoId}`, { method: 'DELETE' })
-                .then(response => {
-                  if (response.ok) {
-                    location.reload();
-                  } else {
-                    alert('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
-                  }
-                })
-                .catch(error => {
-                  console.error('Error al eliminar el empleado:', error);
-                  alert('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
-                });
-            }
-          });
-        });
-
+      // Manejar el clic en el botón de eliminar empleado
+      $(document).on('click', '.btnEliminarEmpleado', function (event) {
+        event.preventDefault();
+        var empleadoId = $(this).data('id'); // Obtener el ID del empleado del atributo data-id
+        if (confirm('¿Estás seguro de que quieres eliminar este empleado?')) {
+          fetch(`/empleados/${empleadoId}`, { method: 'DELETE' })
+            .then(response => {
+              if (response.ok) {
+                location.reload();
+              } else {
+                alert('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
+              }
+            })
+            .catch(error => {
+              console.error('Error al eliminar el empleado:', error);
+              alert('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
+            });
+        }
       });
     });
   </script>
+
 </body>
 
 </html>
