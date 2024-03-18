@@ -164,7 +164,6 @@
               </div>
               <button type="submit" class="btn btn-dark">Insertar</button>
             </form>
-
           </div>
         </div>
       </div>
@@ -235,10 +234,8 @@
         </div>
       </div>
     </div>
-
-
-
   </div>
+  
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
@@ -347,7 +344,7 @@
           fetch(`/empleados/${empleadoId}`, { method: 'DELETE' })
             .then(response => {
               if (response.ok) {
-                location.reload();
+                location.reload();                
               } else {
                 alert('Error al eliminar el empleado. Por favor, inténtalo de nuevo.');
               }
