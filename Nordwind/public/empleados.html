@@ -358,9 +358,101 @@
             });
         }
       });
+
+      $(document).on('click', '.btnModificarEmpleado', function (event) {
+        event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+        var empleadoId = $(this).data('id'); // Obtener el ID del empleado desde el atributo data-id del botón
+
+        // Hacer una solicitud GET al servidor para obtener los datos del empleado
+        fetch(`/empleados/${empleadoId}`)
+          .then(response => response.json())
+          .then(empleado => {
+            // Rellenar el formulario en el modal con los datos del empleado
+            $('#employee_id_edit').val(empleado.employee_id);
+            $('#last_name_edit').val(empleado.last_name);
+            $('#first_name_edit').val(empleado.first_name);
+            $('#title_edit').val(empleado.title);
+            $('#region_edit').val(empleado.region);
+            $('#postal_code_edit').val(empleado.postal_code);
+            $('#home_phone_edit').val(empleado.home_phone);
+            $('#address_edit').val(empleado.address);
+            $('#extension_edit').val(empleado.extension);
+            $('#selectReportsTo_edit').val(empleado.reports_to); // Ajusta esto dependiendo de cómo manejas los datos del select
+            $('#photo_path_edit').val(empleado.photo_path);
+
+            // Mostrar el modal de modificación
+            $('#modificarEmpleadoModal').modal('show');
+          })
+          .catch(error => {
+            console.error('Error al obtener datos del empleado:', error);
+            alert('Error al obtener datos del empleado. Por favor, inténtalo de nuevo.');
+          });
+      });
+
+
+      // Función para cargar las opciones del campo "Reports to" en el formulario de modificación de empleados
+      $('#modificarEmpleadoModal').on('show.bs.modal', async function (event) {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        var empleadoId = button.data('id'); // Obtener el ID del empleado del botón
+
+        try {
+          const response = await fetch('/empleados');
+          const data = await response.json();
+          const select = modal.find('#selectReportsTo_edit');
+          select.empty(); // Limpiar el select antes de agregar las opciones
+          data.forEach(empleado => {
+            select.append(`<option value="${empleado.employee_id}">${empleado.last_name}, ${empleado.first_name}</option>`);
+          });
+          // Seleccionar la opción correspondiente al "Reports to" del empleado actual
+          select.val(empleadoId);
+        } catch (error) {
+          console.error('Error al obtener datos de empleados:', error);
+        }
+      });
+
+// Función para manejar el envío del formulario de modificación de empleado
+$('#formModificarEmpleado').submit(function (event) {
+  event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+  // Obtener el valor de empleadoId del campo oculto
+  var empleadoId = $('#employee_id_edit').val();
+
+  // Obtener los datos del formulario
+  var formData = {
+    last_name: $('#last_name_edit').val(),
+    first_name: $('#first_name_edit').val(),
+    title: $('#title_edit').val(),
+    region: $('#region_edit').val(),
+    postal_code: $('#postal_code_edit').val(),
+    home_phone: $('#home_phone_edit').val(),
+    address: $('#address_edit').val(),
+    extension: $('#extension_edit').val(),
+    reports_to: $('#selectReportsTo_edit').val(),
+    photo_path: $('#photo_path_edit').val()
+  };
+
+  //Enviar los datos al backend 
+  fetch(`/empleados/${empleadoId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Empleado modificado correctamente:', data);
+    cargarEmpleados(); // Actualizar la tabla de empleados
+    $('#modificarEmpleadoModal').modal('hide'); // Cerrar el modal después de enviar el formulario
+  })
+  .catch(error => {
+    console.error('Error al modificar empleado:', error);
+  });
+});
+
     });
   </script>
 
 </body>
-
 </html>
